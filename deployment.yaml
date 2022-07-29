@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: py-flask-kubernetes
+  name: py-flask-kubernetes-sec
   labels:
-    app: py-flask-kubernetes
+    app: py-flask-kubernetes-sec
 spec:
   selector:
     matchLabels:
-      app: py-flask-kubernetes
+      app: py-flask-kubernetes-sec
   replicas: 1
   template:
     metadata:
       labels:
-        app: py-flask-kubernetes
+        app: py-flask-kubernetes-sec
     spec:
       containers:
       - name: py-flask-kubernetes
@@ -37,10 +37,10 @@ status: {}
 apiVersion: v1
 kind: Service
 metadata:
-  name: py-flask-kubernetes
+  name: py-flask-kubernetes-sec
 spec:
   selector:
-    app: py-flask-kubernetes
+    app: py-flask-kubernetes-sec
   ports:
   - protocol: "TCP"
     port: 8081
@@ -51,13 +51,13 @@ spec:
 apiVersion: gateway.kyma-project.io/v1alpha1
 kind: APIRule
 metadata:
-  name: py-flask-kubernetes
+  name: py-flask-kubernetes-sec
 spec:
   gateway: kyma-gateway.kyma-system.svc.cluster.local
   service:
-    name: py-flask-kubernetes
+    name: py-flask-kubernetes-sec
     port: 8081
-    host: py-flask-kubernetes
+    host: py-flask-kubernetes-sec
   rules:
     - path: /.*
       methods: ["GET"]
@@ -74,7 +74,7 @@ spec:
 apiVersion: services.cloud.sap.com/v1
 kind: ServiceInstance
 metadata:
-  name: xsuaa-oidc
+  name: py-flask-kubernetes-xsuaa-oidc
 spec:
   serviceOfferingName: xsuaa
   servicePlanName: application
@@ -84,7 +84,7 @@ spec:
 apiVersion: services.cloud.sap.com/v1
 kind: ServiceBinding
 metadata:
-  name: xsuaa-service-binding
+  name: py-flask-kubernetes-xsuaa-service-binding
 spec:
-  serviceInstanceName: xsuaa-oidc
+  serviceInstanceName: py-flask-kubernetes-xsuaa-oidc
   secretName: xsuaa-service-binding
