@@ -62,5 +62,29 @@ spec:
     - path: /.*
       methods: ["GET"]
       accessStrategies:
-        - handler: noop
-          config: {}
+        - handler: jwt
+          config: 
+            jwks_urls:
+            - >-
+             https://bd7f2882trial.authentication.us10.hana.ondemand.com/token_keys
+
+
+################### XSUAA ###################
+---
+apiVersion: services.cloud.sap.com/v1
+kind: ServiceInstance
+metadata:
+  name: xsuaa-oidc
+spec:
+  serviceOfferingName: xsuaa
+  servicePlanName: application
+
+################### XSUAA SERVICE BINDING ###################
+---
+apiVersion: services.cloud.sap.com/v1
+kind: ServiceBinding
+metadata:
+  name: xsuaa-service-binding
+spec:
+  serviceInstanceName: xsuaa-oidc
+  secretName: xsuaa-service-binding
